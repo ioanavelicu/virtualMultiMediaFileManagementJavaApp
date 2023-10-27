@@ -1,0 +1,6 @@
+package main.Menu;
+
+public enum Options {
+    EXIT, BACK, ADD, REMOVE, RENAME, CHANGELANGUAGE,
+    MANAGEFILES, MANAGEDIRECTORIES, LIST, MOVE
+}
