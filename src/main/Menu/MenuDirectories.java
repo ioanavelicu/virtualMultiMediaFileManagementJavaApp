@@ -44,38 +44,35 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         } else {
             listOfDirectories.add(new Directory(name, pathAdd + '\\' + name));
         }
-        System.out.println("The new directory has been created.");
+        System.out.println("The new directory has been created.\n");
     }
 
     @Override
     public void remove(String pathRemove, String name) throws ExceptionDirectoryDoesNotExist {
         listOfDirectories.removeIf(directory -> directory.getPath().equals(pathRemove));
-        System.out.println("The directory has been deleted.");
+        listOfDirectories.removeIf(directory -> directory.getPath().startsWith(pathRemove));
+        MenuFiles.listOfFiles.removeIf(file -> file.getRootDirectoryPath().startsWith(pathRemove));
+        System.out.println("The directory has been deleted.\n");
     }
 
     @Override
     public void rename(String pathRename, String newName, String oldName) throws ExceptionDirectoryDoesNotExist {
         List<Directory> directories = getListOfDirectories();
-        long numberOfDirectoriesWithTheSamePath = directories.stream()
-                .filter(dr -> dr.getPath().equals(pathRename))
-                .count();
-        if(numberOfDirectoriesWithTheSamePath == 0) {
-
-        } else {
-            listOfDirectories.stream()
-                    .filter(directory -> directory.getPath().startsWith(pathRename))
-                    .forEach(directory -> {
-                        directory.setName(newName);
-                        char symbol = '\\';
-                        int index = pathRename.lastIndexOf(symbol);
-                        String oldPath = directory.getPath().substring(pathRename.length());
-                        System.out.println(oldPath);
-                        String newPath = pathRename.substring(0,index) + "\\" + newName
-                                + oldPath;
-                        directory.setPath(newPath);
-                        directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(directory.getPath()));
-                    });
-        }
+//        long numberOfDirectoriesWithTheSamePath = directories.stream()
+//                .filter(dr -> dr.getPath().equals(pathRename))
+//                .count();
+        listOfDirectories.stream()
+                .filter(directory -> directory.getPath().startsWith(pathRename))
+                .forEach(directory -> {
+                    directory.setName(newName);
+                    char symbol = '\\';
+                    int index = pathRename.lastIndexOf(symbol);
+                    String oldPath = directory.getPath().substring(pathRename.length());
+//                    System.out.println(oldPath);
+                    String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
+                    directory.setPath(newPath);
+                    directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(directory.getPath()));
+                });
     }
 
     @Override
@@ -92,12 +89,16 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     String pathAdd = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathAdd);
-                        System.out.println("Type the name of the new directory:");
-                        String name = scanner.nextLine();
-                        if(StaticMethods.checkDirectoryAlreadyExists(pathAdd, name)) {
-                            throw new ExceptionTheSameDirectory("There is already a directory name that way in the path you mentioned.");
+                        if(StaticMethods.checkPathAddExists(pathAdd)) {
+                            System.out.println("Type the name of the new directory:");
+                            String name = scanner.nextLine();
+                            if(StaticMethods.checkDirectoryAlreadyExists(pathAdd, name)) {
+                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.");
+                            } else {
+                                add(pathAdd, name);
+                            }
                         } else {
-                            add(pathAdd, name);
+                            throw new ExceptionIncorrectPath("The path does not exist");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionTheSameDirectory e) {
                         System.out.println(e.getMessage());

@@ -84,11 +84,13 @@ public class StaticMethods {
 
     public static boolean checkDirectoryAlreadyExists(String pathAdd, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
+//        System.out.println(directories.get(0).getPath().substring(0, pathAdd.length()-1));
 
         long numberOfDirectoriesWithTheSameName = directories.stream()
                 .filter(directory -> (directory.getName().equals(name) &&
-                        directory.getPath().substring(0, directory.getPath().length() - directory.getName().length() - 1).equals(pathAdd)))
+                        directory.getPath().startsWith(pathAdd)))
                 .count();
+        System.out.println(numberOfDirectoriesWithTheSameName);
         return numberOfDirectoriesWithTheSameName != 0;
     }
 
@@ -96,6 +98,14 @@ public class StaticMethods {
         List<Directory> directories = MenuDirectories.getListOfDirectories();
         long numberOfDirectoriesWithTheSamePath = directories.stream()
                 .filter(dr -> dr.getPath().equals(path))
+                .count();
+        return numberOfDirectoriesWithTheSamePath != 0;
+    }
+
+    public static boolean checkPathAddExists(String path) {
+        List<Directory> directories = MenuDirectories.getListOfDirectories();
+        long numberOfDirectoriesWithTheSamePath = directories.stream()
+                .filter(dr -> dr.getPath().startsWith(path))
                 .count();
         return numberOfDirectoriesWithTheSamePath != 0;
     }

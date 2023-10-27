@@ -103,7 +103,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
 
         Directory newDirectory = directories.stream()
                 .filter(dr -> dr.getPath().equals(newPath))
-                .findAny().get();
+                .findAny().orElse(null);
         File file = new File(newDirectory.getPath(), extension, name);
         newDirectory.getListOfFiles().add(file);
         listOfFiles.add(file);
@@ -205,7 +205,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                                 String newPath = scanner.nextLine();
                                 try {
                                     StaticMethods.checkPathIsCorrect(newPath);
-                                    if(StaticMethods.checkPathAlreadyExists(oldPath)) {
+                                    if(StaticMethods.checkPathAlreadyExists(newPath)) {
                                         move(oldPath, newPath, fileMove);
                                     } else {
                                         throw new ExceptionDirectoryDoesNotExist("The directory you want to move the file in does not exist.");
