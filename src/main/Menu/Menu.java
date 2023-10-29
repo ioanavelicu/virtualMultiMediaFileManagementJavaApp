@@ -1,13 +1,8 @@
 package main.Menu;
 
 import main.Constants.Constants;
-import main.Exceptions.ExceptionTheSameDirectory;
 
-import javax.print.attribute.standard.MediaName;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Menu extends AMenu{
@@ -16,8 +11,9 @@ public class Menu extends AMenu{
     private Menu() {
         this.options.put(Options.MANAGEDIRECTORIES,"1. Manage directories");
         this.options.put(Options.MANAGEFILES,"2. Manage files");
-        this.options.put(Options.CHANGELANGUAGE,"3. Change language");
-        this.options.put(Options.EXIT,"4. Exit");
+        this.options.put(Options.STATISTICS,"3. Get statistics");
+        this.options.put(Options.CHANGELANGUAGE,"4. Change language");
+        this.options.put(Options.EXIT,"5. Exit");
     }
 
     public static Menu getInstance() {
@@ -27,25 +23,16 @@ public class Menu extends AMenu{
         return instance;
     }
 
-    private void writeInFile(String filePath) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        PrintWriter printWriter = new PrintWriter(bufferedWriter);
-        MenuDirectories.getListOfDirectories().forEach(directory -> {
-            printWriter.println(directory.getPath());
-            directory.getListOfFiles()
-                    .forEach(file -> printWriter.println(file.getName() + "." + file.getExtension()));
-        });
-        printWriter.close();
-        bufferedWriter.close();
-        fileWriter.close();
-    }
-
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
+            try {
+                StaticMethods.getStatisticsFromApp();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             this.options.values().stream().sorted().forEach(System.out::println);
             int optiune = scanner.nextInt();
             scanner.nextLine();
@@ -61,18 +48,26 @@ public class Menu extends AMenu{
                     menuFiles.run();
                     break;
                 case 3:
-                    System.out.println("3");
+                    try {
+                        StaticMethods.getStatisticsFromApp();
+                        System.out.println("\n**Check the file Statistics.txt\n");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 4:
+                    System.out.println("4");
+                    break;
+                case 5:
                     try {
-                        writeInFile(Constants.getFilePath());
+                        StaticMethods.savingDataInFile(Constants.getFilePath());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                     System.out.println("Saving data...\nExiting...");
+                    System.out.println("*** GOOD BY ***");
                     System.exit(0);
                     isRunning = false;
-                    System.out.println("*** GOOD BY ***");
                     break;
                 default:
                     System.out.println("!! Not a valid option !!");

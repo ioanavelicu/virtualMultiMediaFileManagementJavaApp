@@ -134,16 +134,19 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                             String fileName = scanner.nextLine();
                             if(Constants.fileHasCorrectExtension(StaticMethods.getExtension(fileName))) {
                                 if(StaticMethods.checkFileAlreadyExists(path, fileName)) {
-                                    throw new ExceptionFileAlreadyExists("This file already exists in this directory.");
+                                    throw new ExceptionFileAlreadyExists("This file already exists in this directory.\n");
                                 } else {
                                     add(path, fileName);
                                 }
                             } else {
-                                throw new ExceptionIncorrectFileExtension("The file dose not have the right extension.\n" +
-                                        "It has to be one of these: img, jpeg, png, svg, mp4, mp3, wmv");
+                                throw new ExceptionIncorrectFileExtension("""
+                                        The file dose not have the right extension.
+                                        It has to be one of these: img, jpeg, png, svg, mp4, mp3, wmv
+                                        
+                                        """);
                             }
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory you want to add your file in does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory you want to add your file in does not exist.\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionFileAlreadyExists | ExceptionDirectoryDoesNotExist |
                              ExceptionIncorrectFileExtension e) {
@@ -165,10 +168,10 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                                 String newName = scanner.nextLine();
                                 rename(pathRename, newName, fileRename);
                             } else {
-                                throw new ExceptionFileDoesNotExist("The file does not exist.");
+                                throw new ExceptionFileDoesNotExist("The file does not exist.\n");
                             }
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.\n");
                         }
 
                     } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionFileDoesNotExist e) {
@@ -192,10 +195,10 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                                     remove(pathRemove, fileRemove);
                                 }
                             } else {
-                                throw new ExceptionFileDoesNotExist("The file does not exist.");
+                                throw new ExceptionFileDoesNotExist("The file does not exist.\n");
                             }
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionFileDoesNotExist e) {
                         System.out.println(e.getMessage());
@@ -218,16 +221,16 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                                     if(StaticMethods.checkPathAlreadyExists(newPath)) {
                                         move(oldPath, newPath, fileMove);
                                     } else {
-                                        throw new ExceptionDirectoryDoesNotExist("The directory you want to move the file in does not exist.");
+                                        throw new ExceptionDirectoryDoesNotExist("The directory you want to move the file in does not exist.\n");
                                     }
                                 } catch (ExceptionIncorrectPath e) {
                                     throw new RuntimeException(e);
                                 }
                             } else {
-                                throw new ExceptionFileDoesNotExist("The file does not exist.");
+                                throw new ExceptionFileDoesNotExist("The file does not exist.\n");
                             }
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory does not exist.\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionFileDoesNotExist e) {
                         System.out.println(e.getMessage());

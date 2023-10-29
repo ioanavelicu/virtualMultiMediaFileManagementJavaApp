@@ -1,16 +1,81 @@
 package main.Menu;
 
+import main.Constants.Constants;
 import main.Directory.Directory;
 import main.Exceptions.ExceptionDirectoryDoesNotExist;
 import main.Exceptions.ExceptionIncorrectPath;
 import main.File.File;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class StaticMethods {
+    public static void getStatisticsFromApp() throws IOException {
+        int numberOfDirectories = (int) MenuDirectories.getListOfDirectories().stream().count();
+
+        int[] numberOfFilesPerDirectory = new int[numberOfDirectories];
+        int[] numberOfVideosPerDirectory = new int[numberOfDirectories];
+        int[] numberOfImagesPerDirectory = new int[numberOfDirectories];
+        int[] numberOfAudiosPerDirectory = new int[numberOfDirectories];
+        int i = 0;
+
+        List<Directory> listOdDirectories = MenuDirectories.getListOfDirectories();
+        for(Directory directory : listOdDirectories) {
+            List<File> listOfFiles = directory.getListOfFiles();
+            for(File file : listOfFiles) {
+                numberOfFilesPerDirectory[i] ++;
+                if(file.getExtension().equals("jpeg") || file.getExtension().equals("png")
+                       || file.getExtension().equals("img") || file.getExtension().equals("svg")) {
+                    numberOfImagesPerDirectory[i] ++;
+                }
+                if(file.getExtension().equals("mp3")) {
+                    numberOfAudiosPerDirectory[i] ++;
+                }
+                if(file.getExtension().equals("mp4") || file.getExtension().equals("wmv")) {
+                    numberOfVideosPerDirectory[i] ++;
+                }
+            }
+            i++;
+        }
+
+        FileWriter fileWriter = new FileWriter(Constants.getFileOutPath());
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        PrintWriter printWriter = new PrintWriter(bufferedWriter);
+        printWriter.println("The number of files in each directory:");
+        for(int j = 0; j < numberOfDirectories; j++) {
+            printWriter.println("\t" + listOdDirectories.get(j).getPath() + ": " + numberOfFilesPerDirectory[j]);
+        }
+        printWriter.println("The number of image files in each directory:");
+        for(int j = 0; j < numberOfDirectories; j++) {
+            printWriter.println("\t" + listOdDirectories.get(j).getPath() + ": " + numberOfImagesPerDirectory[j]);
+        }
+        printWriter.println("The number of video files in each directory:");
+        for(int j = 0; j < numberOfDirectories; j++) {
+            printWriter.println("\t" + listOdDirectories.get(j).getPath() + ": " + numberOfVideosPerDirectory[j]);
+        }
+        printWriter.println("The number of audio files in each directory:");
+        for(int j = 0; j < numberOfDirectories; j++) {
+            printWriter.println("\t" + listOdDirectories.get(j).getPath() + ": " + numberOfAudiosPerDirectory[j]);
+        }
+
+        printWriter.close();
+        bufferedWriter.close();
+        fileWriter.close();
+    }
+    public static void savingDataInFile(String filePath) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        PrintWriter printWriter = new PrintWriter(bufferedWriter);
+        MenuDirectories.getListOfDirectories().forEach(directory -> {
+            printWriter.println(directory.getPath());
+            directory.getListOfFiles()
+                    .forEach(file -> printWriter.println(file.getName() + "." + file.getExtension()));
+        });
+        printWriter.close();
+        bufferedWriter.close();
+        fileWriter.close();
+    }
     public static String getExtension(String fileName) {
         int index = fileName.lastIndexOf('.');
         String extension = fileName.substring(index + 1);

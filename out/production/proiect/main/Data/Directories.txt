@@ -1,11 +1,11 @@
 D:\VideosRename
-video1.mp4
-video2.wmv
 img.img
 test.jpeg
 E:\NewYears2022
 audio1.mp3
 D:\VideosRename\NewDirectory
 C:\Video
-C:\Images2
-img.jpeg
+C:\Images
+test2.jpeg
+video2.wmv
+D:\New

@@ -80,12 +80,12 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                             System.out.println("Type the name of the new directory:");
                             String name = scanner.nextLine();
                             if(StaticMethods.checkDirectoryAlreadyExists(pathAdd, name)) {
-                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.");
+                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.\n");
                             } else {
                                 add(pathAdd, name);
                             }
                         } else {
-                            throw new ExceptionIncorrectPath("The path does not exist");
+                            throw new ExceptionIncorrectPath("The path does not exist\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionTheSameDirectory e) {
                         System.out.println(e.getMessage());
@@ -105,7 +105,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                                 remove(pathRemove, "");
                             }
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory you want to remove does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory you want to remove does not exist.\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist e) {
                         System.out.println(e.getMessage());
@@ -123,7 +123,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                             String newName = scanner.nextLine();
                             rename(pathRename, newName, "");
                         } else {
-                            throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.");
+                            throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.\n");
                         }
                     } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist e) {
                         System.out.println(e.getMessage());
