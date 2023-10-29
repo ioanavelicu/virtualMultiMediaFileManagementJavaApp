@@ -51,12 +51,12 @@ public class Menu extends AMenu{
             scanner.nextLine();
             switch (optiune) {
                 case 1:
-                    System.out.println("DIRECTORIES OPTIONS");
+                    System.out.println("\n**Directories options:");
                     MenuDirectories menuDirectories = new MenuDirectories();
                     menuDirectories.run();
                     break;
                 case 2:
-                    System.out.println("FILES OPTIONS");
+                    System.out.println("\n**Files options:");
                     MenuFiles menuFiles = new MenuFiles();
                     menuFiles.run();
                     break;
@@ -72,9 +72,10 @@ public class Menu extends AMenu{
                     System.out.println("Saving data...\nExiting...");
                     System.exit(0);
                     isRunning = false;
+                    System.out.println("*** GOOD BY ***");
                     break;
                 default:
-                    System.out.println("default");
+                    System.out.println("!! Not a valid option !!");
             }
         }
     }

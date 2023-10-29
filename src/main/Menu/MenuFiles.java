@@ -40,9 +40,8 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                 .findAny().get();
         File file = new File(directory.getPath(), extension, name);
         directory.getListOfFiles().add(file);
-        System.out.println(directory.getListOfFiles());
         listOfFiles.add(file);
-        System.out.println("The new file has been created");
+        System.out.println("The new file has been created\n");
     }
 
     @Override
@@ -57,6 +56,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     && file.getName().equals(name) && file.getRootDirectoryPath().equals(directory.getPath()));
         directory.getListOfFiles().removeIf(file -> file.getName().equals(name)
                 && file.getExtension().equals(extension));
+        System.out.println("The file has been deleted\n");
     }
 
     @Override
@@ -72,9 +72,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         File file = new File(directory.getPath(), extension, name);
 
         String oldExtension = fileRename.substring(fileRename.lastIndexOf('.') + 1);
-        System.out.println(oldExtension);
         String oldName = fileRename.substring(0, fileRename.lastIndexOf('.'));
-        System.out.println(oldName);
 
         directory.getListOfFiles().removeIf(f -> f.getName().equals(oldName) &&
                         f.getExtension().equals(oldExtension));
@@ -84,6 +82,8 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                 && f.getName().equals(oldName) &&
                 f.getRootDirectoryPath().equals(directory.getPath()));
         listOfFiles.add(file);
+
+        System.out.println("The file has been renamed\n");
     }
 
     @Override
@@ -109,6 +109,8 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         File file = new File(newDirectory.getPath(), extension, name);
         newDirectory.getListOfFiles().add(file);
         listOfFiles.add(file);
+
+        System.out.println("The file has been moved\n");
     }
 
     @Override
@@ -121,9 +123,9 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
             scanner.nextLine();
             switch (optiune) {
                 case 1:
-                    System.out.println("The paths in witch you can add a new file:");
+                    System.out.println("\nThe paths in witch you can add a new file:");
                     MenuDirectories.getListOfDirectories().forEach(System.out::println);
-                    System.out.println("Type the path you want to put your file in:");
+                    System.out.println("\nType the path you want to put your file in:");
                     String path = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(path);
@@ -149,9 +151,9 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 2:
-                    System.out.println("The list of files that can be renamed:");
+                    System.out.println("\nThe list of files that can be renamed:");
                     listOfFiles.forEach(System.out::println);
-                    System.out.println("Type the path of the file you want to rename");
+                    System.out.println("\nType the path of the file you want to rename");
                     String pathRename = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathRename);
@@ -174,9 +176,9 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 3:
-                    System.out.println("The list of files you may choose from:");
+                    System.out.println("\nThe list of files you may choose from:");
                     listOfFiles.forEach(System.out::println);
-                    System.out.println("Type the path of the file you want to remove:");
+                    System.out.println("\nType the path of the file you want to remove:");
                     String pathRemove = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathRemove);
@@ -200,7 +202,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 4:
-                    System.out.println("Type the path of the file you want to move:");
+                    System.out.println("\nType the path of the file you want to move:");
                     listOfFiles.forEach(System.out::println);
                     String oldPath = scanner.nextLine();
                     try {
@@ -232,16 +234,16 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 5:
-                    System.out.println("The list of files paths:");
+                    System.out.println("\nThe list of files paths:");
                     listOfFiles.forEach(System.out::println);
                     break;
                 case 6:
-                    System.out.println("Backing out...\n");
+                    System.out.println("Backing out...");
                     isRunning = false;
                     Menu.getInstance().run();
                     break;
                 default:
-                    System.out.println("Not a valid option");
+                    System.out.println("!! Not a valid option !!");
             }
         }
     }

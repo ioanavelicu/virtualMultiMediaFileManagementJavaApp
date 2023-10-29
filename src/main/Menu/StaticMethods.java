@@ -67,9 +67,9 @@ public class StaticMethods {
                 .filter(directory -> directory.getPath().equals(path))
                 .findFirst().orElse(null);
         assert dir != null;
-        File f = dir.getListOfFiles().stream()
-                .filter(file -> file.getName().equals(name) && file.getExtension().equals(extension))
-                .findAny().orElse(null);
+//        File f = dir.getListOfFiles().stream()
+//                .filter(file -> file.getName().equals(name) && file.getExtension().equals(extension))
+//                .findAny().orElse(null);
         return dir.getListOfFiles().stream()
                 .anyMatch(file -> file.getName().equals(name) && file.getExtension().equals(extension));
     }
@@ -89,7 +89,6 @@ public class StaticMethods {
 
     public static boolean checkDirectoryAlreadyExists(String pathAdd, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
-//        System.out.println(directories.get(0).getPath().substring(0, pathAdd.length()-1));
 
         long numberOfDirectoriesWithTheSameName = directories.stream()
                 .filter(directory -> (directory.getName().equals(name) &&

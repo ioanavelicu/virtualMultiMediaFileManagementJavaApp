@@ -8,7 +8,6 @@ import main.Interfaces.IAdder;
 import main.Interfaces.IRemover;
 import main.Interfaces.IRenamer;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -47,10 +46,6 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
 
     @Override
     public void rename(String pathRename, String newName, String oldName) throws ExceptionDirectoryDoesNotExist {
-        List<Directory> directories = getListOfDirectories();
-//        long numberOfDirectoriesWithTheSamePath = directories.stream()
-//                .filter(dr -> dr.getPath().equals(pathRename))
-//                .count();
         listOfDirectories.stream()
                 .filter(directory -> directory.getPath().startsWith(pathRename))
                 .forEach(directory -> {
@@ -77,7 +72,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
             scanner.nextLine();
             switch (optiune) {
                 case 1:
-                    System.out.println("Type the path of the new directory: ");
+                    System.out.println("\nType the path of the new directory: ");
                     String pathAdd = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathAdd);
@@ -97,9 +92,9 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     }
                     break;
                 case 2:
-                    System.out.println("The list of directories you may choose from:");
+                    System.out.println("\nThe list of directories you may choose from:");
                     listOfDirectories.forEach(System.out::println);
-                    System.out.println("Type the path of the directory you want to remove:");
+                    System.out.println("\nType the path of the directory you want to remove:");
                     String pathRemove = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathRemove);
@@ -117,9 +112,9 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     }
                     break;
                 case 3:
-                    System.out.println("The list of directories that can be renamed:");
+                    System.out.println("\nThe list of directories that can be renamed:");
                     listOfDirectories.forEach(System.out::println);
-                    System.out.println("Type the path of the directory you want to rename");
+                    System.out.println("\nType the path of the directory you want to rename");
                     String pathRename = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathRename);
@@ -135,17 +130,17 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     }
                     break;
                 case 4:
-                    System.out.println("The list of directories paths:");
+                    System.out.println("\nThe list of directories paths:");
                     listOfDirectories = getListOfDirectories();
                     listOfDirectories.forEach(System.out::println);
                     break;
                 case 5:
-                    System.out.println("Backing out...\n");
+                    System.out.println("\nBacking out...");
                     isRunning = false;
                     Menu.getInstance().run();
                     break;
                 default:
-                    System.out.println("Not a valid option");
+                    System.out.println("!! Not a valid option !!");
             }
         }
     }

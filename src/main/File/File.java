@@ -40,8 +40,8 @@ public class File {
     @Override
     public String toString() {
         return "File details: " +
-                "name: '" + name + '\'' +
-                ", extension: '" + extension + '\'' +
+                "name: " + name +
+                ", extension: " + extension +
                 ", root directory path: " + rootDirectoryPath;
 
     }

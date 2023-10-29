@@ -14,6 +14,7 @@ public class Main {
 //        country = new String("US");
 //        Locale locale = new Locale(language, country);
 //        ResourceBundle properties = ResourceBundle.getBundle("messages", locale);
+        System.out.println("*** WELCOME ***");
         Menu menu = Menu.getInstance();
         try {
             StaticMethods.populateListOfDirectories(Constants.getFilePath());

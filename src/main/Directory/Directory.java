@@ -4,6 +4,7 @@ import main.File.File;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Directory {
@@ -54,8 +55,8 @@ public class Directory {
     @Override
     public String toString() {
         return "Directory details: " +
-                "path: '" + path + '\'' +
-                ", name: '" + name ;
+                "path: " + path +
+                ", name: " + name ;
     }
 
     @Override
@@ -67,6 +68,6 @@ public class Directory {
             return false;
         }
         Directory other = (Directory) obj;
-        return name.equals(other.name) && path == other.path;
+        return name.equals(other.name) && Objects.equals(path, other.path);
     }
 }
