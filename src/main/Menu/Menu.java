@@ -1,9 +1,13 @@
 package main.Menu;
 
+import main.Constants.Constants;
 import main.Exceptions.ExceptionTheSameDirectory;
 
 import javax.print.attribute.standard.MediaName;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Menu extends AMenu{
@@ -21,6 +25,20 @@ public class Menu extends AMenu{
             instance = new Menu();
         }
         return instance;
+    }
+
+    private void writeInFile(String filePath) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        PrintWriter printWriter = new PrintWriter(bufferedWriter);
+        MenuDirectories.getListOfDirectories().forEach(directory -> {
+            printWriter.println(directory.getPath());
+            directory.getListOfFiles()
+                    .forEach(file -> printWriter.println(file.getName() + "." + file.getExtension()));
+        });
+        printWriter.close();
+        bufferedWriter.close();
+        fileWriter.close();
     }
 
     @Override
@@ -46,6 +64,11 @@ public class Menu extends AMenu{
                     System.out.println("3");
                     break;
                 case 4:
+                    try {
+                        writeInFile(Constants.getFilePath());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     System.out.println("Saving data...\nExiting...");
                     System.exit(0);
                     isRunning = false;

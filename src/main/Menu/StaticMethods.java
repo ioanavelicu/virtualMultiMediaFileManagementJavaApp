@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class StaticMethods {
+    public static String getExtension(String fileName) {
+        int index = fileName.lastIndexOf('.');
+        String extension = fileName.substring(index + 1);
+        return extension;
+    }
     public static void populateListOfDirectories(String filePath) throws IOException {
         String line;
         Directory directory = null;

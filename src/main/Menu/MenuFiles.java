@@ -1,10 +1,8 @@
 package main.Menu;
 
+import main.Constants.Constants;
 import main.Directory.Directory;
-import main.Exceptions.ExceptionDirectoryDoesNotExist;
-import main.Exceptions.ExceptionFileAlreadyExists;
-import main.Exceptions.ExceptionFileDoesNotExist;
-import main.Exceptions.ExceptionIncorrectPath;
+import main.Exceptions.*;
 import main.File.File;
 import main.Interfaces.IAdder;
 import main.Interfaces.IMover;
@@ -32,13 +30,17 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
 
     @Override
     public void add(String path, String fileName) {
+        List<Directory> directories = MenuDirectories.getListOfDirectories();
         int index = fileName.lastIndexOf('.');
         String extension = fileName.substring(index + 1);
         String name = fileName.substring(0, index);
         String directoryName = path.substring(path.lastIndexOf('\\'));
-        Directory directory = new Directory(directoryName, path);
+        Directory directory = directories.stream()
+                .filter(dr -> dr.getPath().equals(path))
+                .findAny().get();
         File file = new File(directory.getPath(), extension, name);
         directory.getListOfFiles().add(file);
+        System.out.println(directory.getListOfFiles());
         listOfFiles.add(file);
         System.out.println("The new file has been created");
     }
@@ -128,15 +130,21 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                         if(StaticMethods.checkPathAlreadyExists(path)) {
                             System.out.println("Type the name of the new file including the extension:");
                             String fileName = scanner.nextLine();
-                            if(StaticMethods.checkFileAlreadyExists(path, fileName)) {
-                                throw new ExceptionFileAlreadyExists("This file already exists in this directory.");
+                            if(Constants.fileHasCorrectExtension(StaticMethods.getExtension(fileName))) {
+                                if(StaticMethods.checkFileAlreadyExists(path, fileName)) {
+                                    throw new ExceptionFileAlreadyExists("This file already exists in this directory.");
+                                } else {
+                                    add(path, fileName);
+                                }
                             } else {
-                                add(path, fileName);
+                                throw new ExceptionIncorrectFileExtension("The file dose not have the right extension.\n" +
+                                        "It has to be one of these: img, jpeg, png, svg, mp4, mp3, wmv");
                             }
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The directory you want to add your file in does not exist.");
                         }
-                    } catch (ExceptionIncorrectPath | ExceptionFileAlreadyExists | ExceptionDirectoryDoesNotExist e) {
+                    } catch (ExceptionIncorrectPath | ExceptionFileAlreadyExists | ExceptionDirectoryDoesNotExist |
+                             ExceptionIncorrectFileExtension e) {
                         System.out.println(e.getMessage());
                     }
                     break;

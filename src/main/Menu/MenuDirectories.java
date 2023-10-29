@@ -23,16 +23,6 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         this.options.put(Options.BACK, "5. Back");
     }
 
-    private void writeInFile(String filePath) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        PrintWriter printWriter = new PrintWriter(bufferedWriter);
-        listOfDirectories.forEach(directory -> printWriter.println(directory.getPath()));
-        printWriter.close();
-        bufferedWriter.close();
-        fileWriter.close();
-    }
-
     protected static List<Directory> getListOfDirectories() {
         return listOfDirectories;
     }
@@ -68,10 +58,12 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     char symbol = '\\';
                     int index = pathRename.lastIndexOf(symbol);
                     String oldPath = directory.getPath().substring(pathRename.length());
-//                    System.out.println(oldPath);
                     String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
+                    directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(newPath));
+                    MenuFiles.listOfFiles.stream()
+                                    .filter(file -> file.getRootDirectoryPath().equals(pathRename))
+                                            .forEach(file -> file.setRootDirectoryPath(newPath));
                     directory.setPath(newPath);
-                    directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(directory.getPath()));
                 });
     }
 
@@ -131,9 +123,9 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     String pathRename = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathRename);
-                        System.out.println("Type the new name of the directory:");
-                        String newName = scanner.nextLine();
                         if(StaticMethods.checkPathAlreadyExists(pathRename)) {
+                            System.out.println("Type the new name of the directory:");
+                            String newName = scanner.nextLine();
                             rename(pathRename, newName, "");
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.");
