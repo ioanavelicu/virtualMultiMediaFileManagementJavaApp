@@ -1,6 +1,5 @@
 package main;
 
-
 import main.Constants.Constants;
 import main.Menu.Menu;
 import main.Menu.StaticMethods;

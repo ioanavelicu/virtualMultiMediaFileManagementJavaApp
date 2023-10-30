@@ -63,7 +63,8 @@ public class File {
         this.rootDirectoryPath = rootDirectoryPath;
     }
 
-    /** */
+    /**
+     * Metoda toString() pentru afisarea la consoloa a unui obiect de tip File*/
     @Override
     public String toString() {
         return "File details: " +

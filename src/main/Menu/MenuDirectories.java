@@ -13,13 +13,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer{
+    private static MenuDirectories instance = null;
     protected static List<Directory> listOfDirectories = new ArrayList<>();
-    public MenuDirectories() {
+    private MenuDirectories() {
         this.options.put(Options.ADD, "1. Add a new directory");
         this.options.put(Options.REMOVE, "2. Remove directory");
         this.options.put(Options.RENAME, "3. Rename directory");
         this.options.put(Options.LIST, "4. List directories");
         this.options.put(Options.BACK, "5. Back");
+    }
+
+    public static MenuDirectories getInstance() {
+        if(instance == null) {
+            instance = new MenuDirectories();
+        }
+        return instance;
     }
 
     protected static List<Directory> getListOfDirectories() {

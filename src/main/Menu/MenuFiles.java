@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMover {
+    private static MenuFiles instance = null;
     protected static List<File> listOfFiles = new ArrayList<>();
-    public MenuFiles() {
+    private MenuFiles() {
         this.options.put(Options.ADD, "1. Add a new file");
         this.options.put(Options.RENAME, "2. Rename file");
         this.options.put(Options.REMOVE, "3. Remove file");
@@ -24,6 +25,12 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         this.options.put(Options.BACK, "6. Back");
     }
 
+    public static MenuFiles getInstance() {
+        if(instance == null) {
+            instance = new MenuFiles();
+        }
+        return instance;
+    }
     private List<File> getListOfFiles() {
         return listOfFiles;
     }
