@@ -26,7 +26,7 @@ public class StaticMethods {
             for(File file : listOfFiles) {
                 numberOfFilesPerDirectory[i] ++;
                 if(file.getExtension().equals("jpeg") || file.getExtension().equals("png")
-                       || file.getExtension().equals("img") || file.getExtension().equals("svg")) {
+                        || file.getExtension().equals("svg")) {
                     numberOfImagesPerDirectory[i] ++;
                 }
                 if(file.getExtension().equals("mp3")) {

@@ -65,7 +65,7 @@ public class Menu extends AMenu{
                         throw new RuntimeException(e);
                     }
                     System.out.println("Saving data...\nExiting...");
-                    System.out.println("*** GOOD BY ***");
+                    System.out.println("*** GOOD BYE ***");
                     System.exit(0);
                     isRunning = false;
                     break;
