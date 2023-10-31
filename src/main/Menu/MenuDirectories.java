@@ -92,16 +92,18 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         listOfDirectories.stream()
                 .filter(directory -> directory.getPath().startsWith(pathRename))
                 .forEach(directory -> {
-                    directory.setName(newName);
                     char symbol = '\\';
                     int index = pathRename.lastIndexOf(symbol);
                     String oldPath = directory.getPath().substring(pathRename.length());
-                    String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
-                    directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(newPath));
-                    MenuFiles.listOfFiles.stream()
-                                    .filter(file -> file.getRootDirectoryPath().equals(pathRename))
-                                            .forEach(file -> file.setRootDirectoryPath(newPath));
-                    directory.setPath(newPath);
+                    if (oldPath.isEmpty() || oldPath.startsWith("\\")) {
+                        directory.setName(newName);
+                        String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
+                        directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(newPath));
+                        MenuFiles.listOfFiles.stream()
+                                .filter(file -> file.getRootDirectoryPath().equals(pathRename))
+                                .forEach(file -> file.setRootDirectoryPath(newPath));
+                        directory.setPath(newPath);
+                    }
                 });
     }
 
@@ -203,6 +205,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     }
                     break;
                 case 3:
+                    //daca pun la nume "" merge, nu ar trebui
                     System.out.println("\nThe list of directories that can be renamed:");
                     listOfDirectories.forEach(System.out::println);
                     System.out.println("\nType the path of the directory you want to rename");

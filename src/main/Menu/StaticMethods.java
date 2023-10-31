@@ -166,9 +166,9 @@ public class StaticMethods {
         String extension = fileName.substring(index + 1);
         String name = fileName.substring(0, index);
         Directory dir = MenuDirectories.getListOfDirectories().stream()
-                .filter(directory -> directory.getPath().equals(path))
+                .filter(directory -> directory.getPath().startsWith(path) &&
+                        (directory.getPath().endsWith("") || directory.getPath().endsWith("\\")))
                 .findFirst().orElse(null);
-        assert dir != null;
 //        File f = dir.getListOfFiles().stream()
 //                .filter(file -> file.getName().equals(name) && file.getExtension().equals(extension))
 //                .findAny().orElse(null);
@@ -219,7 +219,7 @@ public class StaticMethods {
     public static boolean checkPathAlreadyExists(String path) {
         List<Directory> directories = MenuDirectories.getListOfDirectories();
         long numberOfDirectoriesWithTheSamePath = directories.stream()
-                .filter(dr -> dr.getPath().startsWith(path))
+                .filter(dr -> dr.getPath().startsWith(path)) //ai putea sa dai un mesaj "this path does not exist, do you want to create it?"
                 .count();
         return numberOfDirectoriesWithTheSamePath != 0;
     }

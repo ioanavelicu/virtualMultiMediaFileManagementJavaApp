@@ -344,6 +344,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 4:
+                    //afiseaza caile eligibile
                     System.out.println("\nThe list of files that can be moved:");
                     listOfFiles.forEach(System.out::println);
                     System.out.println("\nType the path of the file you want to move:");
