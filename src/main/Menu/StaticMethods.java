@@ -2,17 +2,30 @@ package main.Menu;
 
 import main.Constants.Constants;
 import main.Directory.Directory;
-import main.Exceptions.ExceptionDirectoryDoesNotExist;
 import main.Exceptions.ExceptionIncorrectPath;
 import main.File.File;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Clasa utilitara care contine metode statice utilizate in cadrul aplicatiei
+ * Metodele din aceasta clasa nu sunt specifice unei alte clase si sunt folosite de mai multe ori in cadrul altor clase,
+ * deci este mai eficient sa fie stocate intr-o clasa separata de unde pot fi usor accesate*/
 public class StaticMethods {
+    /**
+     * Metoda care preia date din aplicatie, le prelucreaza si afiseaza statisiticile optinute intr-un fisier text
+     * @throws IOException in cazul in care scrierea in fisier nu se face cu succes
+     * Metoda foloseste 4 vectori pentru cele patru staistici. Fiecare vector are numarul de elemente egal cu numarul
+     * total de directoare.
+     * Se parcurge lista de directoare si, in functie de conditiile care sunt verificate pentru fiecare statistica,
+     * creste numarul de elemente corespunzatoare unui director.
+     * La final, datele sunt scrise in fisierul text cu calea preluata din clasa Constants prin metoda getFileOutPath()
+     * @see Constants
+     * Statisticile sunt: cate fisiere sunt in fiecare director, cate fisiere de tip imagine sunt in fiecare director,
+     * cate fisiere de tip audio sunt in fiecare director si cate fisiere de tip video sunt in fiecare director*/
     public static void getStatisticsFromApp() throws IOException {
-        int numberOfDirectories = (int) MenuDirectories.getListOfDirectories().stream().count();
+        int numberOfDirectories = MenuDirectories.getListOfDirectories().size();
 
         int[] numberOfFilesPerDirectory = new int[numberOfDirectories];
         int[] numberOfVideosPerDirectory = new int[numberOfDirectories];
@@ -63,6 +76,13 @@ public class StaticMethods {
         bufferedWriter.close();
         fileWriter.close();
     }
+
+    /**
+     * Metoda care salveaza datele initiale si modificate in urma utilizarii aplicatiei in fisierul text corespunzator
+     * Metoa are ca scop salvarea datelor pentru a putea fi restaurate apoi din fisier
+     * @throws IOException in cazul in care citirea din fisier nu are loc cu succes
+     * @param filePath reprezinta calea fisierului in care se vor scrie datele
+     * Se scriu in fisier calea pentru fiecare director si fisierele care se regasesc la respectiva cale*/
     public static void savingDataInFile(String filePath) throws IOException {
         FileWriter fileWriter = new FileWriter(filePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -76,11 +96,15 @@ public class StaticMethods {
         bufferedWriter.close();
         fileWriter.close();
     }
+
+    /**
+     * */
     public static String getExtension(String fileName) {
         int index = fileName.lastIndexOf('.');
         String extension = fileName.substring(index + 1);
         return extension;
     }
+
     public static void populateListOfDirectories(String filePath) throws IOException {
         String line;
         Directory directory = null;
@@ -152,14 +176,13 @@ public class StaticMethods {
         }
     }
 
-    public static boolean checkDirectoryAlreadyExists(String pathAdd, String name){
+    public static boolean checkDirectoryAlreadyExists(String path, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
 
         long numberOfDirectoriesWithTheSameName = directories.stream()
                 .filter(directory -> (directory.getName().equals(name) &&
-                        directory.getPath().startsWith(pathAdd)))
+                        directory.getPath().startsWith(path)))
                 .count();
-        System.out.println(numberOfDirectoriesWithTheSameName);
         return numberOfDirectoriesWithTheSameName != 0;
     }
 
@@ -171,11 +194,23 @@ public class StaticMethods {
         return numberOfDirectoriesWithTheSamePath != 0;
     }
 
-    public static boolean checkPathAddExists(String path) {
-        List<Directory> directories = MenuDirectories.getListOfDirectories();
-        long numberOfDirectoriesWithTheSamePath = directories.stream()
-                .filter(dr -> dr.getPath().startsWith(path))
-                .count();
-        return numberOfDirectoriesWithTheSamePath != 0;
+    /**
+     * Metoda care verifica daca fisierele introduse au una dintre extensiile date
+     * @return true daca extensia este regasita in vectorul de extensii, false daca nu este*/
+    public static boolean fileHasCorrectExtension(String extension) {
+        for(String e: Constants.getMultimediaFileExtensions()) {
+            if(e.equals(extension)) {
+                return true;
+            }
+        }
+        return false;
     }
+
+//    public static boolean checkPathAddExists(String path) {
+//        List<Directory> directories = MenuDirectories.getListOfDirectories();
+//        long numberOfDirectoriesWithTheSamePath = directories.stream()
+//                .filter(dr -> dr.getPath().startsWith(path))
+//                .count();
+//        return numberOfDirectoriesWithTheSamePath != 0;
+//    }
 }

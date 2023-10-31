@@ -12,9 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer{
+/**
+ * Clasa extinde clasa abstracta AMenu pentru a putea respecta structura unui meniu
+ * Este Singleton, intrucat este nevoie doar de o instanta de meniu la nivelul aplicatiei
+ * Reprezinta meniul cu optiunile pentru directoare*/
+public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer {
+    /**
+     * Declararea instantei de MenuDirectories si initializarea acesteia cu null*/
     private static MenuDirectories instance = null;
+
+    /**
+     * Lista de directoare care va fi populata din fisierul cu date de intrare*/
     protected static List<Directory> listOfDirectories = new ArrayList<>();
+
+    /**
+     * Constructor default
+     * Este privat pentru a respecta regulile de implementare ale design patternului Singleton
+     * In constructor sunt adaugate optiunile pe care le va avea meniul*/
     private MenuDirectories() {
         this.options.put(Options.ADD, "1. Add a new directory");
         this.options.put(Options.REMOVE, "2. Remove directory");
@@ -23,6 +37,10 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         this.options.put(Options.BACK, "5. Back");
     }
 
+    /**
+     * Metoda pentru returnarea instantei de Menu
+     * Daca instanta nu a mai fost utilizata, aceasta este intai initializata
+     * @return instanta de MenuDirectories*/
     public static MenuDirectories getInstance() {
         if(instance == null) {
             instance = new MenuDirectories();
@@ -30,12 +48,18 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         return instance;
     }
 
+    /**
+     * Metoda pentru returnarea listei de directoare de la nivelul meniului*/
     protected static List<Directory> getListOfDirectories() {
         return listOfDirectories;
     }
 
+    /**
+     * Metoda pentru adaugarea unui nou director in lista de directoare
+     * @param name reprezinta numele noului director
+     * @param pathAdd reprezinta calea unde va fi introdus noul director*/
     @Override
-    public void add(String pathAdd, String name) throws ExceptionTheSameDirectory {
+    public void add(String pathAdd, String name){
         if(pathAdd.length() == 3) {
             listOfDirectories.add(new Directory(name, pathAdd + name));
         } else {
@@ -44,14 +68,25 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         System.out.println("The new directory has been created.\n");
     }
 
+    /**
+     * Metoda pentru stergerea unui director din lista de directoare
+     * @param pathRemove reprezinta calea absoluta a directorului care urmeaza a fi sters
+     * Directorul este sters si din lista de directoare, iar apoi se sterg si fisierele aferene acestui director
+     * din lista de fisiere*/
     @Override
-    public void remove(String pathRemove, String name) throws ExceptionDirectoryDoesNotExist {
+    public void remove(String pathRemove, String name) {
         listOfDirectories.removeIf(directory -> directory.getPath().equals(pathRemove));
-        listOfDirectories.removeIf(directory -> directory.getPath().startsWith(pathRemove));
+        listOfDirectories.removeIf(directory -> directory.getPath().startsWith(pathRemove + '\\'));
         MenuFiles.listOfFiles.removeIf(file -> file.getRootDirectoryPath().startsWith(pathRemove));
         System.out.println("The directory has been deleted.\n");
     }
 
+    /**
+     * Metoda pentru redenumire unui director din lista de directoare
+     * @param pathRename reprezinta calea unde se afla directorul care trebuie sa fie redenumite
+     * @param newName reprezinta numele nou al directorului
+     * Directorul este redenumit atat in lista de directoare din cadrul meniului, cat si in cadrul fisierelor din lista
+     * de fisiere ce il au ca director sursa*/
     @Override
     public void rename(String pathRename, String newName, String oldName) throws ExceptionDirectoryDoesNotExist {
         listOfDirectories.stream()
@@ -70,6 +105,54 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                 });
     }
 
+    /**
+     * Metoda care implementeaza functionalitatea meniului prin structura SWITCH prin care se poate alege ce optiune
+     * se va executa
+     * Meniul ruleaza pana cand se alege optiunea de iesire, deoarece se foloseste structura repetitiva WHILE ce are un
+     * paramentru cu valoarea TRUE la inceputul rularii, iar acesta devine FALSE la alegerea optiunii BACK
+     * Pentru a selecta optiunea, se tasteaza numarul acesteia si se apasa tasta ENTER
+     * Raspunsurile sunt preluate de la tastatura printr-un obiect de tip Scanner
+     * Optiunile sunt afisate din lista de optiuni a meniului
+     *
+     * PRIMA OPTIUNE - adaugarea unui nou director
+     * Dupa ce se preia de la tastatura calea in care se doreste sa fie introdus noul director, se fac doua verificari:
+     * calea are formatul corect si calea exista. In cazul in care calea nu exista, se arunca exceptia
+     * ExceptionDirectoryDoesNotExist
+     * @see ExceptionDirectoryDoesNotExist
+     * Pasul urmator este introducerea de la tastatura a numelui noului director, uramand sa se verifice daca directorul
+     * deja exista folosind metoda checkDirectoryAlreadyExists
+     * @see StaticMethods pentru metodele de verificare checkPathIsCorrect si checkPathAddExists
+     * In cazul in care exista deja directorul in calea aleasa, se va arunca exceptia ExceptionTheSameDirectory
+     * @see ExceptionTheSameDirectory
+     * Daca se respecta toate conditiile, atunci se va apela metoda add()
+     *
+     * A DOUA OPTIUNE - stergerea unui director
+     * Se afiseaza lista de directoare astfel incat sa se poate selecta cu usurinta directorul care urmeaza a fi sters
+     * Se preia apoi de la tastatura calea directorului care va fi sters. Calea preluata de la tastatura este verificata
+     * daca are formatul corect si daca exista. In cazul in care calea nu exista, se arunca exceptia
+     * ExceptionDirectoryDoesNotExist
+     * @see ExceptionDirectoryDoesNotExist
+     * In cazul in care se preia de la tastatura ca se doreste stergerea, se apeleaza metoda remove()
+     *
+     * A TREIE OPTIUNE - rednumirea unui director
+     * Se afiseaza lista de directoare astfel incat sa se poate selecta cu usurinta directorul care urmeaza a fi redenumit
+     * Se preia apoi de la tastatura calea directorului care va fi redenumit. Calea preluata de la tastatura este verificata
+     * daca are formatul corect si daca exista. In cazul in care calea nu exista, se arunca exceptia
+     * ExceptionDirectoryDoesNotExist
+     * @see ExceptionDirectoryDoesNotExist
+     * Se preia apoi de la tastatura noul nume al directorului si se verifica daca directorul redenumit deja exista. In
+     * cazul in care exista, se va arunca exceptia ExceptionTheSameDirectory, altfel se apeleaza metoda rename()
+     * @see ExceptionTheSameDirectory
+     *
+     * A PATRA OPTIUNE - vizualizarea listei de directoare
+     * Se preia lista de directoare cu metoda getListOfDirectories() si se afiseaza
+     *
+     * A CINCEA OPTIUNE - inapoi
+     * Intoarce aplicatia in meniul principal prin apelarea metodei run() pe instanta de Menu si se opreste rularea
+     * meniului pentru directoare prin setarea pe FALSE a parametrului din structura repetitiva WHILE
+     *
+     * In cazul in care este introdus de la tastatura un numar care nu reprezinta nicio optiune, se intra in cazul
+     * default*/
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
@@ -84,7 +167,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     String pathAdd = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(pathAdd);
-                        if(StaticMethods.checkPathAddExists(pathAdd)) {
+                        if(StaticMethods.checkPathAlreadyExists(pathAdd)) {
                             System.out.println("Type the name of the new directory:");
                             String name = scanner.nextLine();
                             if(StaticMethods.checkDirectoryAlreadyExists(pathAdd, name)) {
@@ -93,9 +176,9 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                                 add(pathAdd, name);
                             }
                         } else {
-                            throw new ExceptionIncorrectPath("The path does not exist\n");
+                            throw new ExceptionDirectoryDoesNotExist("The path does not exist\n");
                         }
-                    } catch (ExceptionIncorrectPath | ExceptionTheSameDirectory e) {
+                    } catch (ExceptionDirectoryDoesNotExist | ExceptionTheSameDirectory | ExceptionIncorrectPath e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -129,11 +212,15 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                         if(StaticMethods.checkPathAlreadyExists(pathRename)) {
                             System.out.println("Type the new name of the directory:");
                             String newName = scanner.nextLine();
-                            rename(pathRename, newName, "");
+                            if(StaticMethods.checkDirectoryAlreadyExists(pathRename, newName)) {
+                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.\n");
+                            } else {
+                                rename(pathRename, newName, "");
+                            }
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.\n");
                         }
-                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist e) {
+                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionTheSameDirectory e) {
                         System.out.println(e.getMessage());
                     }
                     break;

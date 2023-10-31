@@ -33,14 +33,9 @@ public class Constants {
     }
 
     /**
-     * Metoda care verifica daca fisierele introduse au una dintre extensiile date
-     * @return true daca extensia este regasita in vectorul de extensii, false daca nu este*/
-    public static boolean fileHasCorrectExtension(String extension) {
-        for(String e: multimediaFileExtensions) {
-            if(e.equals(extension)) {
-                return true;
-            }
-        }
-        return false;
+     * Metoda care returneaza vectorul cu extensii pentru fisierele multimedia
+     * @return vectorul de extensii*/
+    public static String[] getMultimediaFileExtensions() {
+        return multimediaFileExtensions;
     }
 }

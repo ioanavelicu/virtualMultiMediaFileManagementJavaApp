@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 /**
  * Clasa extinde clasa abstracta AMenu pentru a putea respecta structura unui meniu
- * Este Singleton, intrucat este nevoie doar de o instanta de meniu la nivelul aplicatiei*/
+ * Este Singleton, intrucat este nevoie doar de o instanta de meniu la nivelul aplicatiei
+ * Reprezinta meniul principal al aplicatiei*/
 public class Menu extends AMenu{
     /**
      * Declararea instantei de Menu si initializarea acesteia cu null*/
