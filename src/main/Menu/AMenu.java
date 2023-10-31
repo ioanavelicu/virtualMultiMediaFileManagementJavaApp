@@ -1,6 +1,6 @@
 package main.Menu;
 
-import main.Exceptions.ExceptionTheSameDirectory;
+import main.Exceptions.ExceptionDirectoryAlreadyExists;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,5 +19,5 @@ public abstract class AMenu {
     /**
      * Metoda abstracta pentru a incepe rularea meniului si a functionalitatilor sale
      * Urmeaza sa fie implementata in clasele care extind AMeniu*/
-    abstract void run() throws ExceptionTheSameDirectory;
+    abstract void run() throws ExceptionDirectoryAlreadyExists;
 }

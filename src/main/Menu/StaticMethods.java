@@ -98,13 +98,21 @@ public class StaticMethods {
     }
 
     /**
-     * */
+     * Metoda pentru extragerea extensiei unui fisier multimedia
+     * @param fileName reprezinta numele fisierului caruia i se doreste extensia
+     * @return extensia fisierului*/
     public static String getExtension(String fileName) {
         int index = fileName.lastIndexOf('.');
         String extension = fileName.substring(index + 1);
         return extension;
     }
 
+    /**
+     * Metoda care populeaza lista de directoare din cadrul meniului pentru directoare cu directoarele si fisierele
+     * din fisierul text cu date de intrare
+     * Se citeste linie cu linie si se creeaza un director sau un fisier, in functie de structura informatiei de pe linie
+     * @param filePath reprezinta calea fisierului cu date de intrare
+     * @throws IOException in cazul in care citirea datelor din fisier nu se efectueaza cu succes*/
     public static void populateListOfDirectories(String filePath) throws IOException {
         String line;
         Directory directory = null;
@@ -124,6 +132,11 @@ public class StaticMethods {
         }
     }
 
+    /**
+     * Metoda care populeaza lista de fisiere din cadrul meniului pentru fisiere
+     * Se citeste linie cu linie si se creeaza un director sau un fisier, in functie de structura informatiei de pe linie
+     * @param filePath reprezinta calea fisierului cu date de intrare
+     * @throws IOException in cazul in care citirea datelor din fisier nu se efectueaza cu succes*/
     public static void populateListOfFiles(String filePath) throws IOException {
         String line;
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
@@ -163,6 +176,11 @@ public class StaticMethods {
                 .anyMatch(file -> file.getName().equals(name) && file.getExtension().equals(extension));
     }
 
+    /**
+     * Metoda care verifica corectitudinea structurii caii unui director
+     * Calea unui director trebuie sa aiba al doilea caracter ':'
+     * @param path reprezinta calea unui director
+     * @throws ExceptionIncorrectPath in cazul in care calea introdusa nu respecta formatul corect*/
     public static boolean checkPathIsCorrect(String path) throws ExceptionIncorrectPath {
         if(path.startsWith(":\\", 1) && path.charAt(path.length() - 1) != '\\') {
             return true;
@@ -176,6 +194,12 @@ public class StaticMethods {
         }
     }
 
+    /**
+     * Metoda care verifica daca un director cu acelasi nume este deja creat intr-o anumita cale
+     * Se numara cate directoare din lista de directoare sunt in aceeasi cale si au acelasi nume ca un anumit director
+     * @param path reprezinta calea absoluta a directorului pentru care se efectueaza testarea
+     * @param name reprezinta numele directorului pentru care se efectueaza testarea
+     * @return true daca un director cu acelasi nume deja exista in acea cale si false daca nu exista*/
     public static boolean checkDirectoryAlreadyExists(String path, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
 
@@ -186,10 +210,16 @@ public class StaticMethods {
         return numberOfDirectoriesWithTheSameName != 0;
     }
 
+    /**
+     * Metoda care verifica daca exista deja o anumita cale
+     * Metoda se foloseste pentru a determina daca o cale a unui director exista pentru a evita cazul in care se
+     * introduce de la tastatura o cale inexistenta, iar modificarile nu se pot efectua
+     * @param path reprezinta calea care trebuie sa fie verificata
+     * @return true daca este gasita calea in lista de directoare sau false daca nu este gasita*/
     public static boolean checkPathAlreadyExists(String path) {
         List<Directory> directories = MenuDirectories.getListOfDirectories();
         long numberOfDirectoriesWithTheSamePath = directories.stream()
-                .filter(dr -> dr.getPath().equals(path))
+                .filter(dr -> dr.getPath().startsWith(path))
                 .count();
         return numberOfDirectoriesWithTheSamePath != 0;
     }

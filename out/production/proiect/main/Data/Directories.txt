@@ -5,4 +5,5 @@ test2.jpeg
 video2.wmv
 img.img
 poza.png
-D:\New
+D:\New\Test2
+D:\New\Test

@@ -3,7 +3,7 @@ package main.Menu;
 import main.Directory.Directory;
 import main.Exceptions.ExceptionDirectoryDoesNotExist;
 import main.Exceptions.ExceptionIncorrectPath;
-import main.Exceptions.ExceptionTheSameDirectory;
+import main.Exceptions.ExceptionDirectoryAlreadyExists;
 import main.Interfaces.IAdder;
 import main.Interfaces.IRemover;
 import main.Interfaces.IRenamer;
@@ -123,7 +123,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
      * deja exista folosind metoda checkDirectoryAlreadyExists
      * @see StaticMethods pentru metodele de verificare checkPathIsCorrect si checkPathAddExists
      * In cazul in care exista deja directorul in calea aleasa, se va arunca exceptia ExceptionTheSameDirectory
-     * @see ExceptionTheSameDirectory
+     * @see ExceptionDirectoryAlreadyExists
      * Daca se respecta toate conditiile, atunci se va apela metoda add()
      *
      * A DOUA OPTIUNE - stergerea unui director
@@ -142,7 +142,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
      * @see ExceptionDirectoryDoesNotExist
      * Se preia apoi de la tastatura noul nume al directorului si se verifica daca directorul redenumit deja exista. In
      * cazul in care exista, se va arunca exceptia ExceptionTheSameDirectory, altfel se apeleaza metoda rename()
-     * @see ExceptionTheSameDirectory
+     * @see ExceptionDirectoryAlreadyExists
      *
      * A PATRA OPTIUNE - vizualizarea listei de directoare
      * Se preia lista de directoare cu metoda getListOfDirectories() si se afiseaza
@@ -171,14 +171,14 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                             System.out.println("Type the name of the new directory:");
                             String name = scanner.nextLine();
                             if(StaticMethods.checkDirectoryAlreadyExists(pathAdd, name)) {
-                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.\n");
+                                throw new ExceptionDirectoryAlreadyExists("There is already a directory named that way in the path you mentioned.\n");
                             } else {
                                 add(pathAdd, name);
                             }
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The path does not exist\n");
                         }
-                    } catch (ExceptionDirectoryDoesNotExist | ExceptionTheSameDirectory | ExceptionIncorrectPath e) {
+                    } catch (ExceptionDirectoryDoesNotExist | ExceptionDirectoryAlreadyExists | ExceptionIncorrectPath e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -213,14 +213,14 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                             System.out.println("Type the new name of the directory:");
                             String newName = scanner.nextLine();
                             if(StaticMethods.checkDirectoryAlreadyExists(pathRename, newName)) {
-                                throw new ExceptionTheSameDirectory("There is already a directory named that way in the path you mentioned.\n");
+                                throw new ExceptionDirectoryAlreadyExists("There is already a directory named that way in the path you mentioned.\n");
                             } else {
                                 rename(pathRename, newName, "");
                             }
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.\n");
                         }
-                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionTheSameDirectory e) {
+                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionDirectoryAlreadyExists e) {
                         System.out.println(e.getMessage());
                     }
                     break;
