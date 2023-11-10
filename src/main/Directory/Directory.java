@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Clasa care defineste caracteristicile un obiect de tip Directory
- * Contine costructor defaul si cu parametri, metode accesor si metoda toString()*/
+ * Contine costructor default si cu parametri, metode accesor si metoda toString()*/
 public class Directory {
     /**
      * Atribut care reprezinta calea absoluta a directorului*/

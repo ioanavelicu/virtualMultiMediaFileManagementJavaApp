@@ -15,15 +15,15 @@ import java.util.List;
 public class StaticMethods {
     /**
      * Metoda care preia date din aplicatie, le prelucreaza si afiseaza statisiticile optinute intr-un fisier text
-     * @throws IOException in cazul in care scrierea in fisier nu se face cu succes
      * Metoda foloseste 4 vectori pentru cele patru staistici. Fiecare vector are numarul de elemente egal cu numarul
      * total de directoare.
      * Se parcurge lista de directoare si, in functie de conditiile care sunt verificate pentru fiecare statistica,
      * creste numarul de elemente corespunzatoare unui director.
      * La final, datele sunt scrise in fisierul text cu calea preluata din clasa Constants prin metoda getFileOutPath()
-     * @see Constants
      * Statisticile sunt: cate fisiere sunt in fiecare director, cate fisiere de tip imagine sunt in fiecare director,
-     * cate fisiere de tip audio sunt in fiecare director si cate fisiere de tip video sunt in fiecare director*/
+     * cate fisiere de tip audio sunt in fiecare director si cate fisiere de tip video sunt in fiecare director
+     * @see Constants
+     * @throws IOException in cazul in care scrierea in fisier nu se face cu succes*/
     public static void getStatisticsFromApp() throws IOException {
         int numberOfDirectories = MenuDirectories.getListOfDirectories().size();
 
@@ -227,7 +227,7 @@ public class StaticMethods {
     /**
      * Metoda care verifica daca fisierele introduse au una dintre extensiile date
      * @return true daca extensia este regasita in vectorul de extensii, false daca nu este*/
-    public static boolean fileHasCorrectExtension(String extension) {
+    public static boolean checkFileHasCorrectExtension(String extension) {
         for(String e: Constants.getMultimediaFileExtensions()) {
             if(e.equals(extension)) {
                 return true;

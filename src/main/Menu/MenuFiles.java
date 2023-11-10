@@ -183,7 +183,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
      * @see ExceptionDirectoryDoesNotExist
      * Pasul urmator este introducerea de la tastatura a numelui noului fisier, uramand sa se verifice daca acesta
      * deja exista in directorul respectiv folosind metoda checkFileAlreadyExists() si sa se verifice daca fisierul are
-     * una dintre extensiile predefinite de aplicatie folosind metoda checkFileAlreadyExists()
+     * una dintre extensiile predefinite de aplicatie folosind metoda checkFileHasCorrectExtension()
      * @see Constants pentru vectorul de extensii
      * In cazul in care fisierul nu are o extensie corecta, se va arunca exceptia ExceptionIncorrectFileExtension
      * @see ExceptionIncorrectFileExtension
@@ -192,7 +192,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
      * Daca se respecta toate conditiile, atunci se va apela metoda add()
      *
      * A DOUA OPTIUNE - stergerea unui fisier
-     * Se afiseaza lista de cu caile directoarelor astfel incat sa se poate selecta cu usurinta calea in care se afla
+     * Se afiseaza lista cu caile directoarelor astfel incat sa se poate selecta cu usurinta calea in care se afla
      * fisierul care urmeaza a fi sters. Se preia apoi de la tastatura calea directorului in care se afla fisierul
      * care va fi sters. Calea preluata de la tastatura este verificata daca are formatul corect si daca exista.
      * In cazul in care calea nu exista, se arunca exceptia ExceptionDirectoryDoesNotExist
@@ -271,7 +271,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                         if(StaticMethods.checkPathAlreadyExists(path)) {
                             System.out.println("Type the name of the new file including the extension:");
                             String fileName = scanner.nextLine();
-                            if(StaticMethods.fileHasCorrectExtension(StaticMethods.getExtension(fileName))) {
+                            if(StaticMethods.checkFileHasCorrectExtension(StaticMethods.getExtension(fileName))) {
                                 if(StaticMethods.checkFileAlreadyExists(path, fileName)) {
                                     throw new ExceptionFileAlreadyExists("This file already exists in this directory.\n");
                                 } else {

@@ -19,5 +19,5 @@ public abstract class AMenu {
     /**
      * Metoda abstracta pentru a incepe rularea meniului si a functionalitatilor sale
      * Urmeaza sa fie implementata in clasele care extind AMeniu*/
-    abstract void run() throws ExceptionDirectoryAlreadyExists;
+    abstract void run();
 }
