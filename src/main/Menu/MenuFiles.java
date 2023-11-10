@@ -280,8 +280,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                             } else {
                                 throw new ExceptionIncorrectFileExtension("""
                                         The file dose not have the right extension.
-                                        It has to be one of these: img, jpeg, png, svg, mp4, mp3, wmv
-                                        
+                                        It has to be one of these: jpeg, png, svg, mp4, mp3, wmv
                                         """);
                             }
                         } else {
@@ -326,7 +325,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     try {
                         StaticMethods.checkPathIsCorrect(pathRename);
                         if(StaticMethods.checkPathAlreadyExists(pathRename)) {
-                            System.out.println("Type the file you want ro rename including the extension:");
+                            System.out.println("Type the file you want to rename including the extension:");
                             String fileRename = scanner.nextLine();
                             if(StaticMethods.checkFileAlreadyExists(pathRename, fileRename)) {
                                 System.out.println("Type the new name of the file:");

@@ -71,6 +71,7 @@ public class StaticMethods {
         for(int j = 0; j < numberOfDirectories; j++) {
             printWriter.println("\t" + listOdDirectories.get(j).getPath() + ": " + numberOfAudiosPerDirectory[j]);
         }
+        fileWriter.flush();
 
         printWriter.close();
         bufferedWriter.close();
@@ -200,7 +201,7 @@ public class StaticMethods {
      * @return true daca un director cu acelasi nume deja exista in acea cale si false daca nu exista*/
     public static boolean checkDirectoryAlreadyExists(String path, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
-//        String oldPath =
+
         long numberOfDirectoriesWithTheSameName = directories.stream()
                 .filter(directory -> (directory.getName().equals(name) &&
                         directory.getPath().startsWith(path)))
@@ -217,7 +218,7 @@ public class StaticMethods {
     public static boolean checkPathAlreadyExists(String path) {
         List<Directory> directories = MenuDirectories.getListOfDirectories();
         long numberOfDirectoriesWithTheSamePath = directories.stream()
-                .filter(dr -> dr.getPath().startsWith(path)) //ai putea sa dai un mesaj "this path does not exist, do you want to create it?"
+                .filter(dr -> dr.getPath().startsWith(path))
                 .count();
         return numberOfDirectoriesWithTheSamePath != 0;
     }
@@ -233,12 +234,4 @@ public class StaticMethods {
         }
         return false;
     }
-
-//    public static boolean checkPathAddExists(String path) {
-//        List<Directory> directories = MenuDirectories.getListOfDirectories();
-//        long numberOfDirectoriesWithTheSamePath = directories.stream()
-//                .filter(dr -> dr.getPath().startsWith(path))
-//                .count();
-//        return numberOfDirectoriesWithTheSamePath != 0;
-//    }
 }

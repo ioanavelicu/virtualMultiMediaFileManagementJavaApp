@@ -1,11 +1,9 @@
-D:\Profil\PozeleMele
-img1.jpeg
-img2.png
+D:\Profil2\PozeleMele
 img3.jpeg
+rename.jpeg
+new.jpeg
 E:\Videos
 video1.mp4
-video2.vmw
-E:\Test\DeSters
-E:\Test
-D:\Profil
+video2.wmv
+D:\Profil2
 D:\NewDirectory
