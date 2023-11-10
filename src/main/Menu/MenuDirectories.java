@@ -4,6 +4,7 @@ import main.Directory.Directory;
 import main.Exceptions.ExceptionDirectoryDoesNotExist;
 import main.Exceptions.ExceptionIncorrectPath;
 import main.Exceptions.ExceptionDirectoryAlreadyExists;
+import main.Exceptions.ExceptionInvalidName;
 import main.Interfaces.IAdder;
 import main.Interfaces.IRemover;
 import main.Interfaces.IRenamer;
@@ -95,16 +96,22 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     char symbol = '\\';
                     int index = pathRename.lastIndexOf(symbol);
                     String oldPath = directory.getPath().substring(pathRename.length());
-                    if (oldPath.isEmpty() || oldPath.startsWith("\\")) {
-                        directory.setName(newName);
-                        String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
-                        directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(newPath));
+                    String newPath = pathRename.substring(0,index) + "\\" + newName + oldPath;
+                    directory.getListOfFiles().forEach(file -> file.setRootDirectoryPath(newPath));
+                    if (oldPath.startsWith("\\")) {
+                        MenuFiles.listOfFiles.stream()
+                                .filter(file -> file.getRootDirectoryPath().startsWith(pathRename))
+                                .forEach(file -> file.setRootDirectoryPath(newPath));
+                    }
+                    if (oldPath.isEmpty()) {
                         MenuFiles.listOfFiles.stream()
                                 .filter(file -> file.getRootDirectoryPath().equals(pathRename))
                                 .forEach(file -> file.setRootDirectoryPath(newPath));
-                        directory.setPath(newPath);
+                        directory.setName(newName);
                     }
+                    directory.setPath(newPath);
                 });
+
     }
 
     /**
@@ -160,10 +167,11 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
+            System.out.println("Choose one option:");
             this.options.values().stream().sorted().forEach(System.out::println);
-            int optiune = scanner.nextInt();
+            int option = scanner.nextInt();
             scanner.nextLine();
-            switch (optiune) {
+            switch (option) {
                 case 1:
                     System.out.println("\nType the path of the new directory: ");
                     String pathAdd = scanner.nextLine();
@@ -215,15 +223,20 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                         if(StaticMethods.checkPathAlreadyExists(pathRename)) {
                             System.out.println("Type the new name of the directory:");
                             String newName = scanner.nextLine();
-                            if(StaticMethods.checkDirectoryAlreadyExists(pathRename, newName)) {
-                                throw new ExceptionDirectoryAlreadyExists("There is already a directory named that way in the path you mentioned.\n");
+                            if(!newName.isBlank()) {
+                                if(StaticMethods.checkDirectoryAlreadyExists(pathRename, newName)) {
+                                    throw new ExceptionDirectoryAlreadyExists("There is already a directory named that way in the path you mentioned.\n");
+                                } else {
+                                    rename(pathRename, newName, "");
+                                }
                             } else {
-                                rename(pathRename, newName, "");
+                                throw new ExceptionInvalidName("The name is not valid!\n");
                             }
                         } else {
                             throw new ExceptionDirectoryDoesNotExist("The directory you want to rename does not exist.\n");
                         }
-                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionDirectoryAlreadyExists e) {
+                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionDirectoryAlreadyExists |
+                             ExceptionInvalidName e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -231,6 +244,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     System.out.println("\nThe list of directories paths:");
                     listOfDirectories = getListOfDirectories();
                     listOfDirectories.forEach(System.out::println);
+                    System.out.println("\n");
                     break;
                 case 5:
                     System.out.println("\nBacking out...");
@@ -238,7 +252,7 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     Menu.getInstance().run();
                     break;
                 default:
-                    System.out.println("!! Not a valid option !!");
+                    System.out.println("!! Not a valid option !!\n");
             }
         }
     }

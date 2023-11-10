@@ -16,11 +16,6 @@ import java.io.IOException;
  * @see Menu*/
 public class Main {
     public static void main(String[] args) {
-//        String language, country;
-//        language = new String("en");
-//        country = new String("US");
-//        Locale locale = new Locale(language, country);
-//        ResourceBundle properties = ResourceBundle.getBundle("messages", locale);
         System.out.println("*** WELCOME ***");
         Menu menu = Menu.getInstance();
         try {

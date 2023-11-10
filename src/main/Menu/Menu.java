@@ -22,8 +22,7 @@ public class Menu extends AMenu{
         this.options.put(Options.MANAGEDIRECTORIES,"1. Manage directories");
         this.options.put(Options.MANAGEFILES,"2. Manage files");
         this.options.put(Options.STATISTICS,"3. Get statistics");
-        this.options.put(Options.CHANGELANGUAGE,"4. Change language");
-        this.options.put(Options.EXIT,"5. Exit");
+        this.options.put(Options.EXIT,"4. Exit");
     }
 
     /**
@@ -76,10 +75,11 @@ public class Menu extends AMenu{
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
+            System.out.println("\nChoose one option:");
             this.options.values().stream().sorted().forEach(System.out::println);
-            int optiune = scanner.nextInt();
+            int option = scanner.nextInt();
             scanner.nextLine();
-            switch (optiune) {
+            switch (option) {
                 case 1:
                     System.out.println("\n**Directories options:");
                     MenuDirectories menuDirectories = MenuDirectories.getInstance();
@@ -99,9 +99,6 @@ public class Menu extends AMenu{
                     }
                     break;
                 case 4:
-                    System.out.println("4");
-                    break;
-                case 5:
                     try {
                         StaticMethods.savingDataInFile(Constants.getFilePath());
                     } catch (IOException e) {

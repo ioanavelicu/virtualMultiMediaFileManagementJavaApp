@@ -35,7 +35,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         this.options.put(Options.REMOVE, "2. Remove file");
         this.options.put(Options.RENAME, "3. Rename file");
         this.options.put(Options.MOVE, "4. Move file");
-        this.options.put(Options.LIST, "5. List files from a directory by path");
+        this.options.put(Options.LIST, "5. List files from directories by path");
         this.options.put(Options.BACK, "6. Back");
     }
 
@@ -68,7 +68,6 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         int index = fileName.lastIndexOf('.');
         String extension = fileName.substring(index + 1);
         String name = fileName.substring(0, index);
-//        String directoryName = path.substring(path.lastIndexOf('\\'));
         Directory directory = directories.stream()
                 .filter(dr -> dr.getPath().equals(path))
                 .findAny().get();
@@ -257,10 +256,11 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
+            System.out.println("Choose one option:");
             this.options.values().stream().sorted().forEach(System.out::println);
-            int optiune = scanner.nextInt();
+            int option = scanner.nextInt();
             scanner.nextLine();
-            switch (optiune) {
+            switch (option) {
                 case 1:
                     System.out.println("\nThe paths in witch you can add a new file:");
                     MenuDirectories.getListOfDirectories().forEach(System.out::println);
@@ -300,7 +300,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     try {
                         StaticMethods.checkPathIsCorrect(pathRemove);
                         if(StaticMethods.checkPathAlreadyExists(pathRemove)) {
-                            System.out.println("Type the file you want to remove:");
+                            System.out.println("Type the file you want to remove including the extension:");
                             String fileRemove = scanner.nextLine();
                             if(StaticMethods.checkFileAlreadyExists(pathRemove, fileRemove)) {
                                 System.out.println("Are you sure you want to remove this file? Y/N");
@@ -326,7 +326,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     try {
                         StaticMethods.checkPathIsCorrect(pathRename);
                         if(StaticMethods.checkPathAlreadyExists(pathRename)) {
-                            System.out.println("Type the file you want ro rename:");
+                            System.out.println("Type the file you want ro rename including the extension:");
                             String fileRename = scanner.nextLine();
                             if(StaticMethods.checkFileAlreadyExists(pathRename, fileRename)) {
                                 System.out.println("Type the new name of the file:");
@@ -344,15 +344,16 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     }
                     break;
                 case 4:
-                    //afiseaza caile eligibile
                     System.out.println("\nThe list of files that can be moved:");
                     listOfFiles.forEach(System.out::println);
+                    System.out.println("\nThe directories in witch you can move your file:");
+                    MenuDirectories.getListOfDirectories().forEach(System.out::println);
                     System.out.println("\nType the path of the file you want to move:");
                     String oldPath = scanner.nextLine();
                     try {
                         StaticMethods.checkPathIsCorrect(oldPath);
                         if(StaticMethods.checkPathAlreadyExists(oldPath)) {
-                            System.out.println("Type the name of the file you want to move:");
+                            System.out.println("Type the name of the file you want to move including the extension:");
                             String fileMove = scanner.nextLine();
                             if(StaticMethods.checkFileAlreadyExists(oldPath, fileMove)) {
                                 System.out.println("Type the path where you want to move your file:");
@@ -381,6 +382,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     System.out.println("\nThe list of files paths:");
                     listOfFiles = getListOfFiles();
                     listOfFiles.forEach(System.out::println);
+                    System.out.println("\n");
                     break;
                 case 6:
                     System.out.println("Backing out...");
@@ -388,7 +390,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     Menu.getInstance().run();
                     break;
                 default:
-                    System.out.println("!! Not a valid option !!");
+                    System.out.println("!! Not a valid option !!\n");
             }
         }
     }

@@ -81,16 +81,4 @@ public class Directory {
                 "path: " + path +
                 ", name: " + name ;
     }
-
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) {
-//            return true;
-//        }
-//        if (obj == null || getClass() != obj.getClass()) {
-//            return false;
-//        }
-//        Directory other = (Directory) obj;
-//        return name.equals(other.name) && Objects.equals(path, other.path);
-//    }
 }

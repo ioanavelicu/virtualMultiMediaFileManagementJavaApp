@@ -166,12 +166,8 @@ public class StaticMethods {
         String extension = fileName.substring(index + 1);
         String name = fileName.substring(0, index);
         Directory dir = MenuDirectories.getListOfDirectories().stream()
-                .filter(directory -> directory.getPath().startsWith(path) &&
-                        (directory.getPath().endsWith("") || directory.getPath().endsWith("\\")))
+                .filter(directory -> directory.getPath().equals(path))
                 .findFirst().orElse(null);
-//        File f = dir.getListOfFiles().stream()
-//                .filter(file -> file.getName().equals(name) && file.getExtension().equals(extension))
-//                .findAny().orElse(null);
         return dir.getListOfFiles().stream()
                 .anyMatch(file -> file.getName().equals(name) && file.getExtension().equals(extension));
     }
@@ -189,8 +185,10 @@ public class StaticMethods {
         } else if(MenuDirectories.listOfDirectories.stream().anyMatch(directory -> directory.getPath().equals(path))) {
             return true;
         } else {
-            throw new ExceptionIncorrectPath("The path you typed dose not have the correct format.\nIt should be"
-                    + " partition:\\existingDirectory\\existingDirectory...");
+            throw new ExceptionIncorrectPath("""
+                    The path you typed dose not have the correct format.
+                    It should be partition:\\existingDirectory\\existingDirectory...
+                    """);
         }
     }
 
@@ -202,7 +200,7 @@ public class StaticMethods {
      * @return true daca un director cu acelasi nume deja exista in acea cale si false daca nu exista*/
     public static boolean checkDirectoryAlreadyExists(String path, String name){
         List<Directory> directories = MenuDirectories.getListOfDirectories();
-
+//        String oldPath =
         long numberOfDirectoriesWithTheSameName = directories.stream()
                 .filter(directory -> (directory.getName().equals(name) &&
                         directory.getPath().startsWith(path)))
