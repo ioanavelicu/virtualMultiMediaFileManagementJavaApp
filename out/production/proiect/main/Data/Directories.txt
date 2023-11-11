@@ -1,9 +1,10 @@
-D:\Profil2\PozeleMele
+D:\Profil\PozeleMele
+img1.jpeg
+img2.png
 img3.jpeg
-rename.jpeg
-new.jpeg
 E:\Videos
 video1.mp4
 video2.wmv
-D:\Profil2
-D:\NewDirectory
+E:\Test\DeSters
+E:\Test
+D:\Profil

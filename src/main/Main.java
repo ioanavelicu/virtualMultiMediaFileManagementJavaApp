@@ -17,6 +17,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         System.out.println("*** WELCOME ***");
+
         Menu menu = Menu.getInstance();
         try {
             StaticMethods.populateListOfDirectories(Constants.getFilePath());

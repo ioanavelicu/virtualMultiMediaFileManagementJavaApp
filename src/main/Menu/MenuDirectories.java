@@ -244,7 +244,6 @@ public class MenuDirectories extends AMenu implements IAdder, IRemover, IRenamer
                     System.out.println("\nThe list of directories paths:");
                     listOfDirectories = getListOfDirectories();
                     listOfDirectories.forEach(System.out::println);
-                    System.out.println("\n");
                     break;
                 case 5:
                     System.out.println("\nBacking out...");

@@ -35,7 +35,7 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
         this.options.put(Options.REMOVE, "2. Remove file");
         this.options.put(Options.RENAME, "3. Rename file");
         this.options.put(Options.MOVE, "4. Move file");
-        this.options.put(Options.LIST, "5. List files from directories by path");
+        this.options.put(Options.LIST, "5. List files");
         this.options.put(Options.BACK, "6. Back");
     }
 
@@ -330,7 +330,11 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                             if(StaticMethods.checkFileAlreadyExists(pathRename, fileRename)) {
                                 System.out.println("Type the new name of the file:");
                                 String newName = scanner.nextLine();
-                                rename(pathRename, newName, fileRename);
+                                if(StaticMethods.checkFileAlreadyExists(pathRename, newName)) {
+                                    throw new ExceptionFileAlreadyExists("This file already exists in this directory.\n");
+                                } else {
+                                    rename(pathRename, newName, fileRename);
+                                }
                             } else {
                                 throw new ExceptionFileDoesNotExist("The file does not exist.\n");
                             }
@@ -338,7 +342,8 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                             throw new ExceptionDirectoryDoesNotExist("The directory does not exist.\n");
                         }
 
-                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionFileDoesNotExist e) {
+                    } catch (ExceptionIncorrectPath | ExceptionDirectoryDoesNotExist | ExceptionFileDoesNotExist |
+                             ExceptionFileAlreadyExists e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -360,12 +365,16 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                                 try {
                                     StaticMethods.checkPathIsCorrect(newPath);
                                     if(StaticMethods.checkPathAlreadyExists(newPath)) {
-                                        move(oldPath, newPath, fileMove);
+                                        if(StaticMethods.checkFileAlreadyExists(newPath,fileMove)) {
+                                            throw new ExceptionFileAlreadyExists("This file already exists in this directory.\n");
+                                        } else {
+                                            move(oldPath, newPath, fileMove);
+                                        }
                                     } else {
                                         throw new ExceptionDirectoryDoesNotExist("The directory you want to move the file in does not exist.\n");
                                     }
-                                } catch (ExceptionIncorrectPath e) {
-                                    throw new RuntimeException(e);
+                                } catch (ExceptionIncorrectPath | ExceptionFileAlreadyExists e) {
+                                    System.out.println(e.getMessage());
                                 }
                             } else {
                                 throw new ExceptionFileDoesNotExist("The file does not exist.\n");
@@ -381,7 +390,6 @@ public class MenuFiles extends AMenu implements IAdder, IRemover, IRenamer, IMov
                     System.out.println("\nThe list of files paths:");
                     listOfFiles = getListOfFiles();
                     listOfFiles.forEach(System.out::println);
-                    System.out.println("\n");
                     break;
                 case 6:
                     System.out.println("Backing out...");
